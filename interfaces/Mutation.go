@@ -1,5 +1,8 @@
 package interfaces
 
+import "fmt"
+
 type Mutation interface {
-	Do(entity SolutionEntity) Mutation
+	SingleChangeOperation
+	Tokens(tokens []fmt.Stringer) error
 }

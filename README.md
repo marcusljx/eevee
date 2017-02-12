@@ -9,4 +9,4 @@ My goal for this project is to restrict myself to the following development rout
 * Then write the objects that can be used in each EC experiment.
 
 ## Product
-I don't expect this to become a widely-used package for EC research, as this is just an experiment for me. But feel free to fork it!
+I don't expect this to become a widely-used package for EC research, as this is just an experiment for me. But feel free to contribute!
