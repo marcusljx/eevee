@@ -1,29 +1,29 @@
 package entities
 
 type SimpleTextEntity struct {
-	data string
+	data []rune
 }
 
 func NewSimpleTextEntity(s string) *SimpleTextEntity {
 	return &SimpleTextEntity{
-		data: s,
+		data: []rune(s),
 	}
 }
 
-func (s *SimpleTextEntity) ParseRuneArray(rArr []rune) {
-	s.data = string(rArr)
-}
-
-func (s *SimpleTextEntity) AsRuneArray() []rune {
-	return []rune(s.data)
-}
-
-func (s *SimpleTextEntity) String() string {
+func (s *SimpleTextEntity) RuneArray() []rune {
 	return s.data
 }
 
+func (s *SimpleTextEntity) Parse(r []rune) {
+	s.data = r
+}
+
+func (s *SimpleTextEntity) String() string {
+	return string(s.data)
+}
+
 func (s *SimpleTextEntity) Score() (sum float64) {
-	for _, r := range s.AsRuneArray() {
+	for _, r := range s.data {
 		sum += float64(r)
 	}
 	return

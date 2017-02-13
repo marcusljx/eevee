@@ -16,14 +16,21 @@ type ShiftMutation struct {
 	tokens      []rune
 }
 
+func NewShiftMutation(probability float64, tokens ...rune) *ShiftMutation {
+	s := &ShiftMutation{}
+	s.Probability(probability)
+	s.AddTokens(tokens...)
+	return s
+}
+
 func (s *ShiftMutation) Do(entity interfaces.SolutionEntity) error {
 	if len(s.tokens) < 2 {
 		return InvalidNumOfTokensError
 	}
 
-	rArr := entity.AsRuneArray()
+	rArr := entity.RuneArray()
 	for i, _ := range rArr {
-		if rand.Float64() < 0.5 {
+		if rand.Float64() < s.probability {
 			rArr[i] = s.tokens[rand.Intn(len(s.tokens))] // assign it a new random value from s.tokens
 		}
 	}
@@ -38,7 +45,7 @@ func (s *ShiftMutation) Probability(p float64) error {
 	return nil
 }
 
-func (s *ShiftMutation) Tokens(tokens []rune) error {
+func (s *ShiftMutation) AddTokens(tokens ...rune) error {
 	if len(tokens) < 2 {
 		return InvalidNumOfTokensError
 	}

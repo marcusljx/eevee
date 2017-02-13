@@ -1,26 +1,38 @@
 package mutations
 
-import "github.com/marcusljx/eevee/interfaces"
+import (
+	"math/rand"
+
+	"github.com/marcusljx/eevee/interfaces"
+)
 
 type BarrelShift struct {
-	probabilty float64
-	roll       int
+	probability float64
+	rollValues  []int
 }
 
-func NewBarrelShiftMutation(rollValue int) *BarrelShift {
-	return &BarrelShift{
-		roll: rollValue,
-	}
+func NewBarrelShiftMutation(probability float64, rollValues ...int) *BarrelShift {
+	b := &BarrelShift{rollValues: rollValues}
+	b.Probability(probability)
+	return b
 }
 
 func (b *BarrelShift) Do(entity interfaces.SolutionEntity) error {
-	data := entity.Data()
-	splitPoint := (len(data) - b.roll) % len(data)
+	if rand.Float64() < b.probability {
+		// Pick rollValue at random
+		roll := b.rollValues[rand.Intn(len(b.rollValues))]
 
-	front, back := data[:splitPoint], data[splitPoint:]
-	entity.Parse(append(back, front...))
+		data := entity.RuneArray()
+		cutPoint := len(data) - (roll % len(data))
+		entity.Parse(append(data[cutPoint:], data[:cutPoint]...))
+	}
+	return nil
 }
 
-func (b *BarrelShift) Probability(p float64) {
-	b.probabilty = p
+func (b *BarrelShift) Probability(p float64) error {
+	if p > 1 || p < 0 {
+		return interfaces.InvalidProbabilityError
+	}
+	b.probability = p
+	return nil
 }

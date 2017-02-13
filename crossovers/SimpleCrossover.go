@@ -29,8 +29,8 @@ func (s *SimpleCrossover) Probability(p float64) error {
 }
 
 func (s *SimpleCrossover) Do(entityA interfaces.SolutionEntity, entityB interfaces.SolutionEntity) error {
-	a := entityA.AsRuneArray()
-	b := entityB.AsRuneArray()
+	a := entityA.RuneArray()
+	b := entityB.RuneArray()
 	if len(a) != len(b) {
 		return EntitySizesDoNotMatchError
 	}
