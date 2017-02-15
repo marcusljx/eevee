@@ -23,9 +23,9 @@ build:
   ci:
     - go get -u gopkg.in/alecthomas/gometalinter.v1
     - $GOPATH/bin/gometalinter.v1 --install; echo Ignoring errors in lint install
+    - go get -t -v ./...
     - wget https://gist.githubusercontent.com/marcusljx/c7d250d1f7272bb1cc9a5a8de47d627a/raw/d0241364b11b49e2be76cc15eb7a39b806fc0854/.gometalinter.json
     - $GOPATH/bin/gometalinter.v1 ./... --config=.gometalinter.json
-    - go get -t -v ./...
     - go test -v ./...
 #    - for d in $(find -type d -not -path '*/\.*'); do go test -race -coverprofile=coverage.txt -covermode=count $d; done
 #
