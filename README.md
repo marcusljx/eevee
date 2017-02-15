@@ -1,4 +1,6 @@
 # eevee
+[ ![Codeship Status for marcusljx/eevee](https://app.codeship.com/projects/2154dd50-d4fa-0134-5db3-3ee0244dabcc/status?branch=master)](https://app.codeship.com/projects/202320)
+
  Basic pluggable evolutionary computation
 
 This project is a self-learning project for myself to learn interface-first test-driven development. 
