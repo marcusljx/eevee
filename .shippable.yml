@@ -1,0 +1,57 @@
+language: go
+
+go:
+  - 1.7
+
+services:
+  - #any supported service
+
+env:
+  - #env1=foo
+  - #env2=bar
+
+matrix:
+
+build:
+#  pre_ci:
+#
+#  pre_ci_boot:
+#    image_name:
+#    image_tag:
+#    pull:
+#    options:
+  ci:
+    - go get -u gopkg.in/alecthomas/gometalinter.v1
+    - $GOPATH/bin/gometalinter.v1 --install; echo Ignoring errors in lint install
+    - wget https://gist.githubusercontent.com/marcusljx/c7d250d1f7272bb1cc9a5a8de47d627a/raw/d0241364b11b49e2be76cc15eb7a39b806fc0854/.gometalinter.json
+    - $GOPATH/bin/gometalinter.v1 ./... --config=.gometalinter.json
+    - go get -t -v ./...
+    - go test -v ./...
+#    - for d in $(find -type d -not -path '*/\.*'); do go test -race -coverprofile=coverage.txt -covermode=count $d; done
+#
+#  post_ci:
+#    - #command1
+#    - #command2
+#  on_success:
+#    - #command1
+#    - #command2
+#  on_failure:
+#    - #command1
+#    - #command2
+#  cache:
+#  cache_dir_list:
+#    - #dir1
+#  push:
+#
+#integrations:
+# notifications:
+#   - integrationName:
+#     type:
+#     recipients:
+#       - #recp1
+#       - #recp2
+#
+#  hub:
+#    - integrationName:
+#      type:
+#      agent_only:
