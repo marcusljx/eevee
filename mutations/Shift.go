@@ -1,31 +1,54 @@
 package mutations
 
 import (
-	"errors"
+	"log"
 	"math/rand"
 
 	"github.com/marcusljx/eevee/interfaces"
+	"github.com/marcusljx/eevee/utils/errors"
 )
 
-var (
-	InvalidNumOfTokensError = errors.New("Invalid number of tokens.")
-)
+//)
 
+// ShiftMutation is a non-deterministic index-shift mutation by a randomly chosen number
+// Effectively it is simple a mutation where a rune is substituted for another rune, chosen at random.
+// ShiftMutation implements the interfaces.Mutation interface
 type ShiftMutation struct {
 	probability float64
 	tokens      []rune
 }
 
+// NewShiftMutation returns a new ShiftMutation object
 func NewShiftMutation(probability float64, tokens ...rune) *ShiftMutation {
-	s := &ShiftMutation{}
-	s.Probability(probability)
-	s.AddTokens(tokens...)
+	s := &ShiftMutation{
+		probability: probability,
+		tokens:      tokens,
+	}
 	return s
 }
 
+// Probability specifies the probability where the mutation will happen
+func (s *ShiftMutation) Probability(probability float64) interfaces.SingleChangeOperation {
+	if probability > 1 || probability < 0 {
+		log.Print(interfaces.InvalidProbabilityError)
+	}
+	s.probability = probability
+	return s
+}
+
+// Tokens specify the set of runes that are used for the mutation
+func (s *ShiftMutation) Tokens(tokens []rune) interfaces.Mutation {
+	if len(tokens) < 2 {
+		log.Print(errors.InvalidNumOfTokensError)
+	}
+	s.tokens = tokens
+	return s
+}
+
+// Do performs the mutation operation.
 func (s *ShiftMutation) Do(entity interfaces.SolutionEntity) error {
 	if len(s.tokens) < 2 {
-		return InvalidNumOfTokensError
+		return errors.InvalidNumOfTokensError
 	}
 
 	rArr := entity.RuneArray()
@@ -34,21 +57,6 @@ func (s *ShiftMutation) Do(entity interfaces.SolutionEntity) error {
 			rArr[i] = s.tokens[rand.Intn(len(s.tokens))] // assign it a new random value from s.tokens
 		}
 	}
-	return nil
-}
-
-func (s *ShiftMutation) Probability(p float64) error {
-	if p > 1 || p < 0 {
-		return interfaces.InvalidProbabilityError
-	}
-	s.probability = p
-	return nil
-}
-
-func (s *ShiftMutation) AddTokens(tokens ...rune) error {
-	if len(tokens) < 2 {
-		return InvalidNumOfTokensError
-	}
-	s.tokens = tokens
+	entity.Parse(rArr)
 	return nil
 }

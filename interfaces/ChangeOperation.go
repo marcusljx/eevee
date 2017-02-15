@@ -3,24 +3,24 @@ package interfaces
 import "errors"
 
 var (
+	// InvalidProbabilityError is the standard error for reporting that a probability error is invalid
 	InvalidProbabilityError = errors.New("Invalid probability value. Expected range is [0.0, 1.0]")
 )
 
-type ChangeOperation interface {
-	Probability(probability float64) error
-}
-
+// SingleChangeOperation is the interface type for an operation that modifies a single SolutionEntity
 type SingleChangeOperation interface {
+	// Do performs the operation
 	Do(entity SolutionEntity) error
-	ChangeOperation
+
+	// Probability sets the probability at which the operation will happen
+	Probability(probability float64) SingleChangeOperation
 }
 
-type DupleChangeOperation interface {
-	Do(entityA SolutionEntity, entityB SolutionEntity) error
-	ChangeOperation
-}
-
+// MultipleChangeOperation is the interface type for an operation that modifies an EntityArray(group of SolutionEntity objects)
 type MultipleChangeOperation interface {
-	Do(entities []SolutionEntity) error
-	ChangeOperation
+	// Do performs the operation
+	Do(entities EntityArray) error
+
+	// Probability sets the probability at which the operation will happen
+	Probability(probability float64) MultipleChangeOperation
 }
