@@ -3,6 +3,9 @@ package main
 import (
 	"flag"
 
+	"log"
+	"os"
+
 	"github.com/marcusljx/eevee/crossovers"
 	"github.com/marcusljx/eevee/entities"
 	"github.com/marcusljx/eevee/experiments"
@@ -45,5 +48,9 @@ func main() {
 	x.ScoreThreshold = 900
 	x.InitialPopulation = initialisePopulation(20)
 
-	experiments.Run(x)
+	err := experiments.Run(x)
+	if err != nil {
+		log.Printf("experiment returned error: %v", err)
+		os.Exit(1)
+	}
 }

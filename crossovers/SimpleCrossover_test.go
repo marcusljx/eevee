@@ -18,7 +18,9 @@ func TestSimpleCrossover_Do(t *testing.T) {
 	b := entities.NewSimpleTextEntity("UVWXYZ")
 
 	c := NewSimpleCrossover(1.0)
-	c.Do(interfaces.EntityArray{a, b})
+	err := c.Do(interfaces.EntityArray{a, b})
+	assert.NoError(t, err)
+
 	assert.Equal(t, "ABCXYZ", fmt.Sprint(a))
 	assert.Equal(t, "UVWDEF", fmt.Sprint(b))
 }

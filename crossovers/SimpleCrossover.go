@@ -36,7 +36,10 @@ func (s *SimpleCrossover) Do(entities interfaces.EntityArray) error {
 		log.Print(errors.OddNumberOfEntitiesWarning)
 	}
 	for i := 0; i < len(entities); i += 2 {
-		crossoverOperation(entities[i], entities[(i+1)%len(entities)]) // crossover each with next (last element is cyclic if container has odd number of elements)
+		err := crossoverOperation(entities[i], entities[(i+1)%len(entities)]) // crossover each with next (last element is cyclic if container has odd number of elements)
+		if err != nil {
+			log.Printf("crossoverOperation():: error : %v", err)
+		}
 	}
 	return nil
 }

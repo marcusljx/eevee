@@ -1,7 +1,7 @@
 package experiments
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/marcusljx/eevee/interfaces"
 )
@@ -11,7 +11,7 @@ const (
 )
 
 var (
-	logFunc = fmt.Printf
+	logFunc = log.Printf
 )
 
 func showScores(cycle uint64, population []interfaces.SolutionEntity) {
